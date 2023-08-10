@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
 
 // "undefined" means the URL will be computed from the `window.location` object
-const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://192.168.0.14:5000';
+const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://chat.mphstar.tech:5000';
 
 export const socket = io(URL);
