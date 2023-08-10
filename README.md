@@ -1,3 +1,14 @@
+# Installation
+
+Client
+- npm install
+- npm run dev
+
+Server
+- cd server
+- pip install -r requirements.txt
+- python app.py
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
