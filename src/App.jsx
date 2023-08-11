@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import BgHerta from "./assets/images/bg.png";
 import NameContext from "./utils/NameContext";
 import FirstPage from "./components/FirstPage";
@@ -12,26 +12,34 @@ const App = () => {
 
 
   useEffect(() => {
-    return () => {
-      socket.on("chat", (res) => {
-        SetDataChat(res)
-      })
-    };
-  }, []);
+    socket.on("chat", (res) => {
+      console.log(res);
+      SetDataChat(res)
 
-  socket.on("connect", () => {
-    SetIsConnected(true);
-    
-  });
+      // DivChat.current.scrollTop = DivChat.current.scrollHeight;
+      // console.log(DivChat.current.scrollTop);
+      // DivChat.current.scrollTop = DivChat.current.scrollHeight;
 
-  
+      
+    })
+
+
+    socket.on("connect", () => {
+      SetIsConnected(true);
+      
+    });
+
+    // console.log(DataChat);
+
+  }, [DataChat]);
+
 
   return !isConnected ? (
     <div className="min-h-screen font-mono w-screen bg-white flex justify-center h-screen items-center px-4 py-4 lg:py-12 relative">
       <p>Not Connected to server!</p>
     </div>
   ) : (
-    <NameContext.Provider value={[Name, SetName, DataChat, SetDataChat]}>
+    <NameContext.Provider value={{Name, SetName, DataChat, SetDataChat}}>
       <div className="min-h-screen font-mono w-screen bg-gray-500 flex justify-center h-screen items-center px-4 py-4 lg:py-12 relative">
         <div className="absolute w-full h-full flex select-none appearance-none pointer-events-none">
           <img className="object-cover w-full" src={BgHerta} alt="bg" />

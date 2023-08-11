@@ -1,16 +1,17 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import NameContext from "../utils/NameContext";
 
 const FirstPage = () => {
   const inputName = useRef(null);
-  const [Name, SetName] = useContext(NameContext);
+  const {Name, SetName} = useContext(NameContext);
 
   const handleNext = () => {
     if (inputName.current.value != "") {
       SetName(inputName.current.value);
     }
   };
+
 
   return (
     <AnimatePresence>

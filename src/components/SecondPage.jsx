@@ -8,7 +8,7 @@ import CatchHerta from "../utils/CatchHerta";
 import playKuru from "../utils/CatchAudio";
 
 const SecondPage = () => {
-  const [Name, SetName, DataChat, SetDataChat] = useContext(NameContext);
+  const {Name, SetName, DataChat, SetDataChat} = useContext(NameContext);
   const inputMsg = useRef(null);
   const divChat = useRef(null);
 
@@ -31,6 +31,7 @@ const SecondPage = () => {
           show: {
             x: -document.body.clientWidth,
             transition: { duration: 1.5 },
+            
           },
         }}
         className="w-fit h-[400px] rounded-md right-0 bottom-0 fixed"
@@ -45,23 +46,29 @@ const SecondPage = () => {
     }, 1500);
   };
 
+
   useEffect(() => {
-    return () => {
+    // divChat.current.scrollTop = 1000000;
+
+    socket.on("receiveMsg", (res) => {
       
-      
-      socket.on("receiveMsg", (res) => {
-        divChat.current.scrollTop = divChat.current.scrollHeight;
-        if (socket.id != res.id && res.sender != Name) {
-          handleKururing();
-        }
-        SetDataChat((DataChat) => [...DataChat, res]);
-      });
-    };
+      if (socket.id != res.id && res.sender != Name) {
+        handleKururing();
+      }
+      SetDataChat((DataChat) => [...DataChat, res]);
+      divChat.current.scrollTop = divChat.current.scrollHeight;
+    });
+
+
+
   }, []);
 
   return (
     <AnimatePresence>
       <motion.div
+      onAnimationComplete={() => {
+        divChat.current.scrollTop = divChat.current.scrollHeight;
+      }}
         key="div-input"
         initial={Name == "" ? "close" : "open"}
         variants={{
@@ -73,6 +80,7 @@ const SecondPage = () => {
               duration: 1,
               ease: "easeInOut",
             },
+            
           },
           close: {
             opacity: 0,
@@ -97,6 +105,9 @@ const SecondPage = () => {
           {DataChat.map((item, index) => {
             return (
               <motion.div
+                onAnimationComplete={() => {
+                  divChat.current.scrollTop = divChat.current.scrollHeight;
+                }}
                 className={`flex ${item.id == socket.id && item.sender ? 'justify-end' : 'justify-start'}`}
                 key={index}
                 initial={{ x: item.id == socket.id && item.sender == Name ? -100 : 100 }}
